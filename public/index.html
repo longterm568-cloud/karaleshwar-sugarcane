@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>करळेश्वर ऊस सप्लायर्स</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #f4f7f6; color: #333; padding-bottom: 30px; }
+    
+    /* Header & Branding */
+    header {
+      background: linear-gradient(135deg, #1b5e20, #388e3c);
+      color: white;
+      text-align: center;
+      padding: 24px 16px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .logo-container {
+      width: 95px;
+      height: 95px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      border: 3px solid #ffd700;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .logo-container img { width: 100%; height: 100%; object-fit: cover; }
+    header h1 { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    header p { font-size: 13px; opacity: 0.9; }
+
+    /* Dashboard Cards Grid */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 18px;
+    }
+    .card {
+      color: white;
+      border-radius: 18px;
+      padding: 20px 14px;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card:active { transform: scale(0.97); }
+    .card i { font-size: 32px; margin-bottom: 10px; display: block; }
+    .card h3 { font-size: 15px; font-weight: 600; }
+
+    /* Button Colors */
+    .bg-trip { background: linear-gradient(135deg, #0575e6, #00f260); }
+    .bg-credit { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+    .bg-worker { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+    .bg-plot { background: linear-gradient(135deg, #f7971e, #ffd200); color: #333 !important; }
+    .bg-stats { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
+    .bg-about { background: linear-gradient(135deg, #4b79a1, #283e51); }
+
+    /* Modal / Popup Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 22px 18px;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+      animation: slideUp 0.3s ease-out;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .modal-header h2 { font-size: 18px; color: #1b5e20; }
+    .close-btn { font-size: 24px; border: none; background: none; cursor: pointer; color: #888; }
+    
+    /* Form inputs */
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: #444; }
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    .form-control:focus { border-color: #2e7d32; }
+    .btn-submit {
+      width: 100%;
+      background: #2e7d32;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-secondary {
+      background: #e0f2f1;
+      color: #00796b;
+      border: 1px dashed #00796b;
+      padding: 9px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .customer-block {
+      background: #f8faf9;
+      border: 1px solid #e1e8e5;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+    .stats-card {
+      background: #f1f8e9;
+      border-left: 4px solid #388e3c;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
+    .stats-card p { font-size: 13px; color: #555; }
+    .stats-card h4 { font-size: 18px; color: #2e7d32; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-container">
+      <img src="logo.png" alt="करळेश्वर लोगो" onerror="this.src='https://via.placeholder.com/100?text=LOGO'">
+    </div>
+    <h1>करळेश्वर ऊस सप्लायर्स</h1>
+    <p>जल्द डिलिव्हरी, उत्तम दर्जा!</p>
+  </header>
+
+  <!-- Buttons Grid -->
+  <div class="grid-container">
+    <div class="card bg-trip" onclick="openModal('tripModal')">
+      <i class="fa-solid fa-truck-fast"></i>
+      <h3>trip नोंद करा</h3>
+    </div>
+
+    <div class="card bg-credit" onclick="openModal('creditModal')">
+      <i class="fa-solid fa-wallet"></i>
+      <h3>उधारी जोडा</h3>
+    </div>
+
+    <div class="card bg-worker" onclick="openModal('workerModal')">
+      <i class="fa-solid fa-people-group"></i>
+      <h3>कामगार व्यवस्थापन</h3>
+    </div>
+
+    <div class="card bg-plot" onclick="openModal('plotModal')">
+      <i class="fa-solid fa-seedling"></i>
+      <h3>प्लॉट व्यवस्थापन</h3>
+    </div>
+
+    <div class="card bg-stats" onclick="openModal('statsModal')">
+      <i class="fa-solid fa-chart-line"></i>
+      <h3>व्यवसाय सारांश</h3>
+    </div>
+
+    <div class="card bg-about" onclick="openModal('aboutModal')">
+      <i class="fa-solid fa-code"></i>
+      <h3>About Developer</h3>
+    </div>
+  </div>
+
+  <!-- 1. Trip Modal -->
+  <div id="tripModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-truck"></i> नवीन ट्रिप नोंदवा</h2>
+        <button class="close-btn" onclick="closeModal('tripModal')">&times;</button>
+      </div>
+      <form onsubmit="saveTrip(event)">
+        <div id="customersList">
+          <div class="customer-block">
+            <strong>कस्टमर १</strong>
+            <div class="form-group" style="margin-top:6px;">
+              <input type="text" class="form-control" placeholder="कस्टमरचे नाव" required>
+            </div>
+            <div class="form-group">
+              <input type="number" step="0.01" class="form-control" placeholder="घेतलेला ऊस (टन मध्ये)" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="जागा / Landmark" required>
+            </div>
+            <button type="button" class="btn-secondary" onclick="getLocation(this)">
+              <i class="fa-solid fa-location-dot"></i> Google Maps लोकेशन निवडा
+            </button>
+          </div>
+        </div>
+        <button type="button" class="btn-secondary" onclick="addMoreCustomer()">+ आणखी कस्टमर जोडा</button>
+        <button type="submit" class="btn-submit">ट्रिप जतन करा</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Credit Modal -->
+  <div id="creditModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-wallet"></i> उधारी नोंदवा</h2>
+        <button class="close-btn" onclick="closeModal('creditModal')">&times;</button>
+      </div>
+      <form onsubmit="saveCredit(event)">
+        <div class="form-group">
+          <label>उधारी धारकाचे नाव</label>
+          <input type="text" class="form-control" placeholder="उदा. सुरेश पाटील" required>
+        </div>
+        <div class="form-group">
+          <label>पत्ता</label>
+          <input type="text" class="form-control" placeholder="गाव / पत्ता" required>
+        </div>
+        <div class="form-group">
+          <label>मोबाईल नंबर</label>
+          <input type="tel" class="form-control" placeholder="१० अंकी नंबर" required>
+        </div>
+        <div class="form-group">
+          <label>उधारी रक्कम (₹)</label>
+          <input type="number" class="form-control" placeholder="रक्कम टाका" required>
+        </div>
+        <button type="submit" class="btn-submit">उधारी सेव्ह करा</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Worker Modal -->
+  <div id="workerModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-people-group"></i> कामगार व्यवस्थापन</h2>
+        <button class="close-btn" onclick="closeModal('workerModal')">&times;</button>
+      </div>
+      <button class="btn-secondary" onclick="alert('कामगार जोडण्याचा पर्याय')">+ नवीन कामगार जोडा</button>
+      
+      <!-- Worker Detail Profile Example -->
+      <div class="customer-block" style="border-left: 4px solid #2193b0;">
+        <h3 style="margin-bottom: 8px;">👷 सिद्धेश</h3>
+        <p style="font-size: 13px;">घेतलेली उचल: <strong>₹ २,०००</strong></p>
+        <p style="font-size: 13px;">देणे बाकी: <strong>₹ ५,५००</strong></p>
+        <p style="font-size: 13px;">घेणे बाकी: <strong>₹ ०</strong></p>
+        <hr style="margin: 8px 0; border: none; border-top: 1px dashed #ccc;">
+        <label style="font-size: 12px; font-weight: bold;">कामाचे प्रकार:</label>
+        <div style="font-size: 13px; margin-top: 4px;">
+          <input type="checkbox" checked> ऊस तोडणे <br>
+          <input type="checkbox" checked> गाडी भरणे (घाली) <br>
+          <input type="checkbox"> गाडी खाली करणे <br>
+          <input type="checkbox"> Trey लावणे
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Plot Modal -->
+  <div id="plotModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-seedling"></i> प्लॉट व्यवस्थापन</h2>
+        <button class="close-btn" onclick="closeModal('plotModal')">&times;</button>
+      </div>
+      <form onsubmit="savePlot(event)">
+        <div class="form-group">
+          <label>शेतकऱ्याचे नाव</label>
+          <input type="text" class="form-control" placeholder="शेतकऱ्याचे नाव" required>
+        </div>
+        <div class="form-group">
+          <label>प्लॉट घेण्याचा प्रकार</label>
+          <select class="form-control">
+            <option>प्रति टन (Per Ton)</option>
+            <option>प्रति गुंठा (Per Guntha)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>अंदाजे प्लॉटमधील ऊस (टन)</label>
+          <input type="number" class="form-control" placeholder="उदा. 80" required>
+        </div>
+        <div class="form-group">
+          <label>आजपर्यंत गेलेला ऊस (टन)</label>
+          <input type="number" class="form-control" placeholder="उदा. 25" required>
+        </div>
+        <button type="submit" class="btn-submit">प्लॉट माहिती जोडा</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Stats Modal -->
+  <div id="statsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-chart-line"></i> व्यवसाय संपूर्ण आकडेवारी</h2>
+        <button class="close-btn" onclick="closeModal('statsModal')">&times;</button>
+      </div>
+      <div class="stats-card">
+        <p>संपूर्ण येणे बाकी</p>
+        <h4>₹ ०.००</h4>
+      </div>
+      <div class="stats-card" style="border-left-color: #d32f2f; background: #ffebee;">
+        <p>संपूर्ण देणे बाकी</p>
+        <h4 style="color: #d32f2f;">₹ ०.००</h4>
+      </div>
+      <div class="stats-card" style="border-left-color: #f57c00; background: #fff3e0;">
+        <p>बाजारातील एकूण उधारी</p>
+        <h4 style="color: #f57c00;">₹ ०.००</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. About Developer Modal -->
+  <div id="aboutModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-code"></i> About Developer</h2>
+        <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
+      </div>
+      <div style="line-height: 1.6; font-size: 14px;">
+        <p><strong>प्रकल्प:</strong> करळेश्वर ऊस सप्लायर्स ॲप</p>
+        <p><strong>निर्माता:</strong> खास ऊस व्यवसाय सुलभ करण्यासाठी डिझाइन केलेले व्यवस्थापन ॲप.</p>
+        <p><strong>व्हर्जन:</strong> 1.0.0 (Web Edition)</p>
+        <p style="margin-top: 8px; color: #2e7d32; font-weight: bold;">Built with ❤️ for Indian Agriculture</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    let customerCount = 1;
+    function addMoreCustomer() {
+      customerCount++;
+      const div = document.createElement('div');
+      div.className = 'customer-block';
+      div.innerHTML = `
+        <strong>कस्टमर ${customerCount}</strong>
+        <div class="form-group" style="margin-top:6px;">
+          <input type="text" class="form-control" placeholder="कस्टमरचे नाव" required>
+        </div>
+        <div class="form-group">
+          <input type="number" step="0.01" class="form-control" placeholder="घेतलेला ऊस (टन मध्ये)" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="जागा / Landmark" required>
+        </div>
+        <button type="button" class="btn-secondary" onclick="getLocation(this)">
+          <i class="fa-solid fa-location-dot"></i> Google Maps लोकेशन निवडा
+        </button>
+      `;
+      document.getElementById('customersList').appendChild(div);
+    }
+
+    function getLocation(btn) {
+      if (navigator.geolocation) {
+        btn.innerText = "लोकेशन मिळवत आहे...";
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> सेव्ह केले (Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)})`;
+            btn.style.background = "#c8e6c9";
+            btn.style.color = "#2e7d32";
+          },
+          () => {
+            window.open("https://maps.google.com", "_blank");
+            btn.innerText = "मॅप्स उघडले";
+          }
+        );
+      } else {
+        window.open("https://maps.google.com", "_blank");
+      }
+    }
+
+    function saveTrip(e) {
+      e.preventDefault();
+      alert('ट्रिप यशस्वीरित्या सेव्ह झाली!');
+      closeModal('tripModal');
+    }
+    function saveCredit(e) {
+      e.preventDefault();
+      alert('उधारी यशस्वीरित्या नोंदवली गेली!');
+      closeModal('creditModal');
+    }
+    function savePlot(e) {
+      e.preventDefault();
+      alert('प्लॉट माहिती सेव्ह झाली!');
+      closeModal('plotModal');
+    }
+  </script>
+</body>
+</html>
