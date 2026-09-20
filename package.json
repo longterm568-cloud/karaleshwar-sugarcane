@@ -1,0 +1,13 @@
+
+{
+  "name": "karaleshwar-sugarcane",
+  "version": "1.0.0",
+  "description": "कराळेश्वर ऊस सप्लायर्स व्यवस्थापन प्रणाली",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
